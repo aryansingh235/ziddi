@@ -11,11 +11,11 @@ const orderSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    products: [{
+    product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
         required: true
-    }],
+    },
     totalAmount: {
         type: Number,
         required: true
@@ -24,6 +24,9 @@ const orderSchema = new mongoose.Schema({
         type: String,
         enum: ['pending', 'delivered', 'cancelled'],
         default: 'pending'
+    },
+    deliveryAddress: {
+        type: String
     }
 }, {timestamps: true})
 

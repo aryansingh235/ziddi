@@ -11,6 +11,11 @@ const offerSchema = new mongoose.Schema({
         ref: 'Product',
         require: true
     },
+    seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     offerType: {
         type: String,
         enum: ['bid', 'swap'],
