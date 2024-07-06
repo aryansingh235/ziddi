@@ -4,6 +4,7 @@ const app = express()
 const PORT = 3000
 const authroute = require('./routes/auth')
 const productsroute = require('./routes/products')
+const cartroute = require('./routes/cart')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -14,6 +15,7 @@ mongoose.connect("mongodb://localhost/ziddi")
 
 app.use('/auth', authroute)
 app.use('/products', productsroute)
+app.use('/cart', cartroute)
 
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}`)
