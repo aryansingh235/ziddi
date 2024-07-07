@@ -21,13 +21,37 @@ const Offer = require('../models/offer')
 
 router.get('/', async (req,res) => {
     try {
+        const { size, gender, category, sortBy, order } = req.query
         let filter = {}
-        const products = await Product.find(filter).populate('seller')
+        let sort = {}
+
+        if(size){
+            filter.size = size
+        }
+        if(gender){
+            filter.gender = gender
+        }
+        if(category){
+            filter.category = category
+        }
+        if(sortBy){
+            sort[sortBy] = order === 'desc' ? -1 : 1
+        }
+
+        const products = await Product.find(filter).sort(sort).populate({path: 'seller', select: 'name email'})
         res.json(products)
     } catch (error) {
         res.status(500).json({msg: error.message})
     }
 })
+
+router.get('/:id', async (req, res) => {
+    const productId = req.params.id 
+    const product = await Product.findById(productId)
+    res.json(product)
+})
+
+
 // upload.array('image', 5)
 router.post('/', auth, async (req,res) => {
     const { name, description, price, size, gender, category, images } = req.body
