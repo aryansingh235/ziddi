@@ -5,6 +5,8 @@ const PORT = 3000
 const authroute = require('./routes/auth')
 const productsroute = require('./routes/products')
 const cartroute = require('./routes/cart')
+const bidroute = require('./routes/bid')
+const swaproute = require('./routes/swap')
 const orderroute = require('./routes/order')
 
 app.use(express.json())
@@ -17,6 +19,8 @@ mongoose.connect("mongodb://localhost/ziddi")
 app.use('/auth', authroute)
 app.use('/products', productsroute)
 app.use('/cart', cartroute)
+app.use('/bid', bidroute)
+app.use('/swap', swaproute)
 app.use('/order', orderroute)
 
 app.listen(PORT, () => {
