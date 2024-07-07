@@ -22,10 +22,6 @@ const userSchema = new mongoose.Schema({
     cart: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
-    }],
-    offers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Offers'
     }]
 }, {timestamps: true})
 

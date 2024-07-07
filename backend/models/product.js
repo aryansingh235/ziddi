@@ -36,11 +36,7 @@ const productSchema = new mongoose.Schema({
     buyer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    },
-    offers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Offer'
-    }]
+    }
 }, {timestamps: true})
 
 const Product = mongoose.model('Product', productSchema)
