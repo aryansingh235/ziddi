@@ -38,6 +38,8 @@ router.get('/', async (req,res) => {
             sort[sortBy] = order === 'desc' ? -1 : 1
         }
 
+        filter.buyer = { $exists: false }
+
         const products = await Product.find(filter).sort(sort).populate({path: 'seller', select: 'name email'})
         res.json(products)
     } catch (error) {

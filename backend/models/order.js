@@ -20,6 +20,10 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    orderType: {
+        type: String,
+        enum: ['normal', 'bid', 'swap']
+    },
     status: {
         type: String,
         enum: ['pending', 'delivered', 'cancelled'],
