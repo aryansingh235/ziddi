@@ -22,7 +22,8 @@ router.post('/checkout/:id', auth, async (req, res) => {
         buyer: buyerId,
         seller: sellerId,
         product: productId,
-        totalAmount: product.price
+        totalAmount: product.price,
+        orderType: 'normal'
     })
     res.json(newOrder)
 
@@ -66,7 +67,8 @@ router.post('/bid/:offerId', auth, async (req, res) => {
             buyer: offer.buyer,
             seller: sellerId,
             product: offer.product,
-            totalAmount: offer.offerDetails.bidAmount
+            totalAmount: offer.offerDetails.bidAmount,
+            orderType: 'bid'
         })
         res.json(newBidOrder)
         
@@ -102,14 +104,16 @@ router.post('/swap/:offerId', auth, async (req, res) => {
             buyer: offer.buyer,
             seller: sellerId,
             product: offer.product,
-            totalAmount: 0
+            totalAmount: 0,
+            orderType: 'swap'
         })
         
         const sellerSwapOrder = await Order.create({
             buyer: sellerId,
             seller: offer.buyer,
             product: offer.offerDetails.swapProduct,
-            totalAmount: 0
+            totalAmount: 0,
+            orderType: 'swap'
         })
 
         const popsellerinventory = await User.findByIdAndUpdate(sellerId,
@@ -135,6 +139,30 @@ router.post('/swap/:offerId', auth, async (req, res) => {
     }
 })
 
+router.delete('/cancel/:id', auth, async (req, res) => {
+    const buyerId = req.user.id 
+    const orderId = req.params.id 
+    const order = await Order.findById(orderId)
+    const sellerId = order.seller
+    const productId = await Product.findById(order.product)
 
+    if(buyerId != order.buyer){
+        return res.sendStatus(401)
+    }
+
+    const sellerinventoryupdate = await User.findByIdAndUpdate(sellerId, 
+        { $push: {"inventory": productId}}
+    )
+
+    const productkabuyerupdate = await Product.findByIdAndUpdate(productId, 
+        { $unset: { buyer: "" }}
+    )
+
+    const deleteorder = await Order.findByIdAndUpdate(orderId, {
+        status: "cancelled"
+    }
+    )
+    res.sendStatus(200)
+})
 
 module.exports = router
