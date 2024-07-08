@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        // required: true
+        required: true
     },
     price: {
         type: Number,
@@ -16,17 +16,17 @@ const productSchema = new mongoose.Schema({
     size: {
         type: String,
         enum: ['S','M','L','XL'],
-        // required: true
+        required: true
     },
     gender: {
         type: String,
         enum: ['M','F'],
-        // required: true
+        required: true
     },
     category: {
         type: String,
         enum: ["Accessories", "Footwear", "Shirt/T-Shirt", "Tops", "Dresses", "Jackets", "Lowers"],
-        // required: true
+        required: true
     },
     images: [String],
     seller: {

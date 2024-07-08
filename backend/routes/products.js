@@ -4,20 +4,20 @@ const auth = require('../middleware/auth')
 const Product = require('../models/product')
 const User = require('../models/user')
 const Offer = require('../models/offer')
-// const multer = require('multer')
-// const path = require('path')
+const multer = require('multer')
+const path = require('path')
 
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, './uploads')
-//     },
-//     filename: function (req, file, cb) {
-//       cb(null, file.originalname)
-//     }
-//   })
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname)
+    }
+  })
   
-// const upload = multer({ storage: storage })
+const upload = multer({ storage: storage })
 
 router.get('/', async (req,res) => {
     try {
@@ -54,11 +54,10 @@ router.get('/:id', async (req, res) => {
 })
 
 
-// upload.array('image', 5)
-router.post('/', auth, async (req,res) => {
-    const { name, description, price, size, gender, category, images } = req.body
+router.post('/', auth, upload.array('image', 3), async (req,res) => {
+    const { name, description, price, size, gender, category } = req.body
     const seller = req.user.id
-    // const images = req.files.map(file => `/uploads/${file.filename}`)
+    const images = req.files.map(file => `/uploads/${file.filename}`)
     const newProduct = await Product.create({
         name,
         description,
